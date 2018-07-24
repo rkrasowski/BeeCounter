@@ -8,7 +8,7 @@
 int numOfChannels = 12;
 int hive = 21;
 int apiary = 3;
-int delay2send = 5;			/* Time delay between message to server */
+int delay2send = 1;			/* Time delay between message to server */
 
 /* Program variable */
 
@@ -23,8 +23,8 @@ int inOutArray[24];
 int bitArray[24];	/* Array of bits from shift register*/
 long long int timeArray[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,};	/* put start time  for speed calculations */
 long long int timeDiff;
-long long int timeInArray[10000];	/* Times IN to average for later speed calculation */
-long long int  timeOutArray[10000];	/* Times OUT to average for later speed calculation */
+long long int timeInArray[1000000];	/* Times IN to average for later speed calculation */
+long long int  timeOutArray[1000000];	/* Times OUT to average for later speed calculation */
 int timeInNumber = 0;		/* Number of the element in timeInArray, will be reset at snding to file */
 int timeOutNumber = 0;		/* Number of the ellement in timeOutArray, will be reset at sending to file */
 
@@ -54,9 +54,9 @@ int main (void)
 			{
 				if (time2be > (unsigned)time(NULL))
 					{
-						delay(1000);
-					startTestTime = getMicrotime();
 
+				/*	startTestTime = getMicrotime();*/
+					
 						wiringPiSetup();
 						pinMode (2, OUTPUT);
 						pinMode (3, OUTPUT);
@@ -79,21 +79,16 @@ int main (void)
 
 
 						counter();
-						elapsTime = (getMicrotime() - startTestTime) * 0.000001;
-                                                printf("Elaps time is: %.6f\n",elapsTime);
-
 
 					}
 
 				else
 					{
 
-
-
-						delay(1000);
+				/*	startTestTime = getMicrotime(); */
 					/* Gettint Unux time*/
- 						time_t seconds;
 
+ 						time_t seconds;
    						seconds = time(NULL);
 
 					/* calculate the speed */
@@ -134,14 +129,14 @@ int main (void)
 
                 				speedOut = (float)sum / numOfElements;
 						speedOut = 1/(speedOut * 0.00000001);
-					/*
+
 
 						printf("\nSendind data to file\n");
 						printf("In is:%d\n",in);
 						printf("Out is:%d\n",out);
    						printf("Speed IN is %.1f\n", speedIn);
 						printf("Speed OUT is %.1f\n\n",speedOut);
-					*/
+
 
 					/* Putting data into the file */
 
@@ -188,8 +183,11 @@ int main (void)
                                                 timeOutNumber = 0;
 
 						time2be = (unsigned)time(NULL) + delay2send;
-					}
 
+
+					/*	elapsTime = (getMicrotime() - startTestTime) * 0.000001;
+                                                printf("Elaps time is: %.6f\n",elapsTime); */
+					}
 
 
 				}
